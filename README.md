@@ -131,16 +131,3 @@ Vercel provides seamless, zero-config deployment for Next.js apps:
 This makes it ideal for a personal site that should be reliable, performant, and easy to maintain.
 
 ---
-
-## **Future Enhancements**
-
-- [ ] RSS feed at `/rss.xml`
-- [ ] Privacy-friendly analytics (Vercel Analytics or Plausible)
-- [ ] Code syntax highlighting with Prism or Shiki
-- [ ] Reading time estimates for blog posts
-- [ ] Related posts suggestions
-- [ ] Newsletter subscription
-- [ ] Open Graph images for social sharing
-
----
-
