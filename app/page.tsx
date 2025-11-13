@@ -120,7 +120,7 @@ export default function Home() {
             className="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl shadow-lg"
           >
             {/* Hidden fields for Web3Forms */}
-            <input type="hidden" name="access_key" value="ebcb5fe9-9eb3-4f6d-a15b-d57393e6fc5b" />
+            <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_KEY} />
             <input type="hidden" name="subject" value="New Contact Form Submission from helloto.me" />
 
             <div className="mb-6">
