@@ -3,9 +3,9 @@
 
 ## **Project Overview**
 
-This project is a personal website built to serve as both a **resume landing page** and a **Markdown-based blog**. It’s designed for simplicity, performance, and a modern, animated presentation.
+This project is a personal website built to serve as both a **resume landing page** and a **Markdown-based webpost hub**. It’s designed for simplicity, performance, and a modern, animated presentation.
 
-The site is **hosted on [Vercel](https://vercel.com)** and built with **Next.js**, combining **MDX** (Markdown + JSX) for blog posts, **Tailwind CSS** for styling, and **Framer Motion** for smooth animations.
+The site is **hosted on [Vercel](https://vercel.com)** and built with **Next.js**, combining **MDX** (Markdown + JSX) for webposts, **Tailwind CSS** for styling, and **Framer Motion** for smooth animations.
 
 ---
 
@@ -15,7 +15,7 @@ The site is **hosted on [Vercel](https://vercel.com)** and built with **Next.js*
 | ------------------- | ----------------------------------------------- | --------------------------------------------------- |
 | **Framework**       | [Next.js](https://nextjs.org/)                  | React-based framework for static and dynamic pages  |
 | **Styling**         | [Tailwind CSS](https://tailwindcss.com/)        | Utility-first CSS for responsive, modern layouts    |
-| **Content**         | [MDX](https://mdxjs.com/)                       | Write blog posts in Markdown with React components  |
+| **Content**         | [MDX](https://mdxjs.com/)                       | Write webposts in Markdown with React components    |
 | **Animations**      | [Framer Motion](https://www.framer.com/motion/) | For smooth, declarative motion effects              |
 | **Hosting**         | [Vercel](https://vercel.com/)                   | Global CDN hosting and CI/CD platform               |
 | **Version Control** | [GitHub](https://github.com/)                   | Source control and automatic deployment integration |
@@ -42,7 +42,7 @@ npm start
 
 Visit `http://localhost:3000` to see your site.
 
-### Adding Blog Posts
+### Adding Webposts
 
 Create `.mdx` files in the `posts/` directory with frontmatter:
 
@@ -65,20 +65,20 @@ Your markdown content here...
 │  ├─ layout.tsx          # Root layout with theme provider
 │  ├─ page.tsx            # Landing page with contact form
 │  ├─ globals.css         # Global styles and Tailwind
-│  ├─ blog/
-│  │  ├─ page.tsx         # Blog listing with search & filters
+│  ├─ webpost/
+│  │  ├─ page.tsx         # Webpost listing with search & filters
 │  │  └─ [slug]/
-│  │     └─ page.tsx      # Dynamic blog post page
+│  │     └─ page.tsx      # Dynamic webpost page
 │  └─ resume/
 │     └─ page.tsx         # Animated resume page
 ├─ components/
 │  ├─ ThemeProvider.tsx   # Dark/light mode context
 │  ├─ ThemeToggle.tsx     # Theme toggle button
 │  ├─ Navbar.tsx          # Site navigation
-│  └─ PostCard.tsx        # Blog post preview card
+│  └─ PostCard.tsx        # Webpost preview card
 ├─ lib/
 │  └─ posts.ts            # Utilities for reading MDX files
-├─ posts/                 # MDX blog posts
+├─ posts/                 # MDX webposts
 │  └─ example-post.mdx
 ├─ package.json
 ├─ tailwind.config.ts
@@ -107,8 +107,8 @@ The site is continuously deployed via **Vercel**, connected directly to GitHub.
 
 ## **Features**
 
-* 📄 **MDX blog posts** with frontmatter metadata
-* 🔍 **Blog search & tag filtering** for easy navigation
+* 📄 **MDX webposts** with frontmatter metadata
+* 🔍 **Webpost search & tag filtering** for easy navigation
 * 🌓 **Dark/light mode toggle** with local storage persistence
 * ✨ **Smooth animations** using Framer Motion
 * 📧 **Contact form** on landing page

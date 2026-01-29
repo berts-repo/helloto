@@ -15,26 +15,9 @@ That's the part that keeps nagging at me. If someone at my skill level can build
 
 ## What I Built
 
-MCP Pwnbox exposes common pentesting tools through Model Context Protocol (MCP), a standard that lets AI assistants call external tools. The architecture looks like this:
-
-```
-AI Assistant (Claude Code)
-    │
-    ▼ MCP Protocol (stdin/stdout JSON-RPC)
-    │
-Orchestrator (State Machine)
-    │
-    ├─→ Recon Server (nmap, masscan, dig)
-    ├─→ Enum Server (gobuster, ffuf, feroxbuster)
-    ├─→ Exploit Server (sqlmap, hydra, nikto)
-    └─→ Post Server (linpeas, chisel, nxc)
-```
+MCP Pwnbox exposes common pentesting tools through Model Context Protocol (MCP), a standard that lets AI assistants call external tools.
 
 Everything runs in Docker containers with host networking, so the tools can reach targets through VPN interfaces. The orchestrator enforces proper pentest methodology through a state machine:
-
-```
-INIT → RECON → ENUM → VULN_ANALYSIS → EXPLOIT → POST_EXPLOIT → COMPLETE
-```
 
 It's deliberately strict. You can't run `sqlmap` during recon. You can't skip enumeration. The AI has to follow the same disciplined workflow a professional would use.
 
@@ -67,7 +50,7 @@ sqlmap_scan({
 })
 ```
 
-The AI is making decisions at each phase based on what it finds. It maintains context across the entire engagement. It suggests next steps. It's not just running commands - it's conducting a structured assessment.
+The AI is making decisions at each phase based on what it finds. It maintains context across the entire engagement. It suggests next steps. It's not just running commands, it's conducting a structured assessment.
 
 ## Why This Matters
 

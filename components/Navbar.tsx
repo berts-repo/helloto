@@ -10,7 +10,7 @@ export function Navbar() {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/blog", label: "Blog" },
+    { href: "/webpost", label: "Webposts" },
     { href: "/resume", label: "Resume" },
   ];
 

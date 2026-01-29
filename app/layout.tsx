@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Bert Darnell | Cybersecurity Professional",
-  description: "Personal website, technical blog, and resume for Bert Darnell - Cybersecurity Professional and Help Desk Specialist",
+  description: "Personal website, technical webposts, and resume for Bert Darnell - Cybersecurity Professional and Help Desk Specialist",
 };
 
 export default function RootLayout({

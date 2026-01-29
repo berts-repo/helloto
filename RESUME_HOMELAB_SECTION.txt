@@ -91,7 +91,7 @@ Use these when discussing your homelab projects:
 4. TECHNICAL DEPTH:
    "I documented the entire infrastructure setup process in comprehensive
     technical guides, demonstrating my ability to create clear documentation
-    for complex systems - you can see them on my blog at helloto.me"
+    for complex systems - you can see them on my webposts at helloto.me"
 
 5. QUANTIFIABLE RESULTS:
    "By implementing GPU hardware acceleration, I reduced CPU usage during video
@@ -148,7 +148,7 @@ Technical Documentation:
 • Authored comprehensive technical documentation covering infrastructure
   deployment, configuration management, and troubleshooting procedures
 
-• Published detailed walkthrough guides on personal blog demonstrating ability
+• Published detailed walkthrough guides on personal webposts demonstrating ability
   to communicate complex technical concepts to varied audiences
 
 
@@ -177,7 +177,7 @@ DO:
 ✓ Quantify achievements where possible (85% reduction, 20+ devices, etc.)
 ✓ Mention technologies relevant to job posting
 ✓ Keep formatting consistent with rest of resume
-✓ Link to your blog (helloto.me) if submitting digitally
+✓ Link to your webposts (helloto.me) if submitting digitally
 
 DON'T:
 ✗ Include internal IP addresses or sensitive info

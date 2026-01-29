@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
   return {
-    title: `${post.title} | Blog`,
+    title: `${post.title} | Webposts`,
     description: post.excerpt,
   };
 }
@@ -73,7 +73,7 @@ const components = {
   ),
 };
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function WebpostPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
@@ -94,7 +94,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
         <article className="container mx-auto px-6 py-12 max-w-3xl">
           <Link
-            href="/blog"
+            href="/webpost"
             className="inline-flex items-center text-[#4682B4] dark:text-[#5F9EA0] hover:underline mb-8"
           >
             <svg
@@ -110,7 +110,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back to Blog
+            Back to Webposts
           </Link>
 
           <header className="mb-8">

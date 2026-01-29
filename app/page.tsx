@@ -71,7 +71,7 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="grid md:grid-cols-2 gap-6 mb-20"
         >
-          <Link href="/blog">
+          <Link href="/webpost">
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
@@ -79,7 +79,7 @@ export default function Home() {
             >
               <div className="text-white">
                 <h2 className="text-3xl font-bold mb-3 group-hover:translate-x-2 transition-transform">
-                  Blog
+                  Webposts
                 </h2>
                 <p className="text-blue-100">
                   Read my technical articles and tutorials

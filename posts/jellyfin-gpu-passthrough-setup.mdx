@@ -38,7 +38,7 @@ A dedicated Jellyfin media server with:
 ## Prerequisites
 
 Before starting, ensure:
-1. Proxmox GPU passthrough is configured (see [Proxmox GPU Passthrough Guide](/blog/proxmox-gpu-passthrough))
+1. Proxmox GPU passthrough is configured (see [Proxmox GPU Passthrough Guide](/webpost/proxmox-gpu-passthrough))
 2. Ubuntu Server VM is created with GPU passed through
 3. You can SSH into the VM or access the console
 4. GPU is visible in the VM (`lspci | grep -i nvidia` shows your card)
@@ -275,4 +275,4 @@ You now have a fully functional Jellyfin media server with NVIDIA GPU hardware a
 - Configure remote access via reverse proxy
 - Set up automated library scanning
 - Optimize your media library organization
-- Consider setting up [WireGuard VPN](/blog/wireguard-vpn-setup) for secure remote access
+- Consider setting up [WireGuard VPN](/webpost/wireguard-vpn-setup) for secure remote access

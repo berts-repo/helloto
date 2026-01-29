@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { PostCard } from "./PostCard";
 import type { Post } from "@/lib/posts";
 
-export function BlogClient({ posts, tags }: { posts: Post[]; tags: string[] }) {
+export function WebpostClient({ posts, tags }: { posts: Post[]; tags: string[] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ export function BlogClient({ posts, tags }: { posts: Post[]; tags: string[] }) {
       transition={{ duration: 0.5 }}
     >
       <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
-        Blog
+        Webposts
       </h1>
       <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
         Technical articles, tutorials, and thoughts

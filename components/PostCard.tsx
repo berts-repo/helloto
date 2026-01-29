@@ -13,7 +13,7 @@ export function PostCard({ post }: { post: Post }) {
   });
 
   return (
-    <Link href={`/blog/${post.slug}`}>
+    <Link href={`/webpost/${post.slug}`}>
       <motion.article
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
