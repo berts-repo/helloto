@@ -1,0 +1,24 @@
+---
+title: "Building a Multi-Provider AI Agent Orchestration System with MCP"
+date: "2026-02-04"
+excerpt: "How I built a secure multi-provider AI orchestration system using the Model Context Protocol to combine Claude Code with Gemini for controlled web access."
+tags: ["AI", "MCP", "Claude Code", "Agent Orchestration", "Gemini", "Security"]
+---
+
+# Building a Multi-Provider AI Agent Orchestration System with MCP
+
+## Introduction
+
+I've been building a system that orchestrates different AI agents. The key idea was that I wanted to preserve tokens and combine different companies for specialized tasks. I also had some security concerns, so I implemented a dedicated AI agent for searching and reading the web only. This keeps web access isolated—Claude Code never touches the internet directly. All web searches go through a local MCP server that I control, which uses Gemini with Google Search grounding. The system also has bash restrictions in place to prevent Claude from making direct network calls like curl or wget.
+
+## The Problem/Goal
+
+The goal was to build a multi-provider orchestration system using the MCP bridge pattern. Claude Code handles reasoning and local tasks, but delegates web search to Gemini. The MCP server acts as a controlled boundary—nothing goes to the internet unless it passes through that layer. This gives me an audit trail and lets me block direct network access via bash restrictions.
+
+## The Solution
+
+The solution uses the Model Context Protocol to bridge Claude Code with external services. The MCP server registers a `web_search` tool that Claude can call. When the user says "search the web," a hook injects context telling Claude to use that tool. The server sanitizes the query, forwards it to Gemini, and wraps the response in UNTRUSTED markers. Hook scripts prevent bash from making direct network calls, forcing all internet access through the MCP boundary. I also organized specialized agent skill scripts into a token-preserve directory—these are lower-tier model definitions for mechanical tasks like diff digests or doc comment generation.
+
+## The Result
+
+I now have a working multi-provider orchestration system. Claude Code handles reasoning and local work, Gemini handles web search, and the MCP boundary keeps everything auditable and controlled. The bash restrictions prevent direct network access, and the hooks ensure web content gets cited properly. The token-preserve directory has specialized agents ready to go for mechanical tasks. Next steps are implementing the OpenAI provider and possibly adding more specialized agents.
