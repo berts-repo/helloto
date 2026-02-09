@@ -8,7 +8,7 @@ const resumeData = {
   title: "Cybersecurity Professional | Help Desk Specialist",
   contact: {
     email: "bert@helloto.me",
-    github: "github.com/screenpeak",
+    github: "github.com/berts-repo",
     location: "Beaver, PA",
   },
   summary:
