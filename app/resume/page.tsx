@@ -92,6 +92,10 @@ const resumeData = {
   ],
   hardSkills: [
     "Active Directory",
+    "User Provisioning/Deprovisioning",
+    "Role-Based Access Control (RBAC)",
+    "SSO & Directory-Based Authentication",
+    "Group Policy Management",
     "Windows Servers",
     "Linux System Administration",
     "Virtualization (Proxmox VE)",
