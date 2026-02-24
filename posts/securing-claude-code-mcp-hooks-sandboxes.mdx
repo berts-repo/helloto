@@ -1,0 +1,46 @@
+---
+title: "Securing Claude Code with MCP Servers, Hooks, and OS-Level Sandboxes"
+date: "2026-02-24"
+excerpt: "How I built a local orchestration layer around Claude Code to make dangerous agent behavior structurally impossible, not just politely discouraged."
+tags: ["Claude", "AI Agents", "Security", "MCP", "Codex", "Automation"]
+---
+
+# Securing Claude Code with MCP Servers, Hooks, and OS-Level Sandboxes
+
+## Introduction
+
+Giving AI the ability to access the terminal, read e-mails, and perform autonomous actions is fun and useful right up until you get owned. The default behavior of most CLI coding agents is unconstrained, they can read SSH keys, make network requests and write files anywhere. If malicious instructions end up on the internet for the agent to read, nothing stops it from acting on those instructions. This project is my solution for that.
+
+## The Hook System
+
+Hooks are bash scripts that fire at different lifecycle events for Claude Code: `UserPromptSubmit`, `PreToolUse`, `PostToolUse`. At the top of each of the files is a frontmatter which helps determine which lifecycle and tool to be called and when. A single script, `sync-hooks.sh`, reads those headers and creates symlinks to update Claude's settings automatically.
+
+## Security Model
+
+No single layer for defense is enough. Prompt instructions can be injected, hooks can only catch the pattern. My solution is defense in depth: instructions, hooks, then OS-level sandbox that the agent literally cannot escape, then my approval for whatever is left.
+
+## Codex Delegation
+
+Codex gets its own sandboxed process. Claude can hand it a task, directory or file and then it returns a summary. The source files, generated code, or test outputs — none of that passes through Claude's context window.
+
+There are three sandbox modes depending on what the task needs:
+
+- **`read-only`** — for analysis, code review, and exploration. No writes, no network.
+- **`workspace-write`** — for code edits and test generation. Can write to the working directory only, no network access.
+- **`danger-full-access`** — for package installs or anything that needs full system access. Always paired with human approval on every command.
+
+The token savings are a structural side effect, not an optimization. When Claude does code work itself, every source file, test, and output gets loaded into its context window. When it delegates, only the summary comes back. A test generation task that might cost ~9500 tokens in Claude's context costs around 300 tokens as a delegation — roughly 97% less. The same pattern holds for documentation (~95%), code review (~90%), and refactoring (~85%).
+
+## Gemini Web Search
+
+Web access prompt injection is a vulnerability. The Gemini hook watches every prompt for the user to request explicit search criteria, specific phrases like "search the web" or "do some research". What comes back is untrusted input. Separate Stop hooks check every response before it reaches me. Too strict of phrases lead to false positives being flagged. Network commands from Bash are blocked.
+
+## Setting It Up
+
+Setup is five steps. Clone the repo, drop the session instructions into `~/.claude/CLAUDE.md`, add your Gemini API key, register the MCP server, and run `sync-hooks.sh`. That last script does the heavy lifting — it reads every hook file, wires the symlinks, and updates Claude's settings. After that, hooks are live and the Gemini server is connected. Codex is optional; if you have CLI access, `codex login` handles auth and you're ready to delegate.
+
+1. Clone the repo and copy `CLAUDE.example.md` to `~/.claude/CLAUDE.md`
+2. Run `npm install` in `gemini-web-mcp/server/` and add your API key
+3. Run `claude mcp add` to register the Gemini server
+4. Run `bash scripts/sync-hooks.sh` — auto-wires all hooks
+5. Copy slash commands to `~/.claude/commands/`
