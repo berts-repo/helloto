@@ -32,11 +32,11 @@ A complete WireGuard VPN solution with:
 - **Tools**: `wireguard-tools`, `qrencode`, `iptables`
 
 ### Network Configuration
-- **Server IP**: `${WG_SERVER_IP}` (local IP, e.g., 192.168.0.200)
+- **Server IP**: `10.0.0.1` (local IP, e.g., 192.168.0.200)
 - **WireGuard Tunnel IPs**:
   - Full tunnel: `10.0.0.0/24`
   - Mobile tunnel: `10.10.10.0/24`
-- **Router Public IP**: `${PUBLIC_IP}`
+- **Router Public IP**: `vpn.example.com`
 - **WireGuard Ports**:
   - Main tunnel: `51820`
   - Mobile tunnel: `51821`
@@ -77,10 +77,10 @@ Configure:
 ```bash
 auto enp0s3
 iface enp0s3 inet static
-    address ${WG_SERVER_IP}  # e.g., 192.168.0.200
+    address 10.0.0.1  # e.g., 192.168.0.200
     netmask 255.255.255.0
-    gateway ${GATEWAY_IP}    # e.g., 192.168.0.1
-    dns-nameservers ${PIHOLE_IP} ${PIHOLE_BACKUP_IP}  # e.g., 192.168.0.53 192.168.0.153
+    gateway 192.168.0.1    # e.g., 192.168.0.1
+    dns-nameservers 192.168.0.53 192.168.0.153  # e.g., 192.168.0.53 192.168.0.153
 ```
 
 Restart networking:
@@ -92,9 +92,9 @@ sudo systemctl restart networking
 #### Option B: Using NetworkManager
 
 ```bash
-nmcli con mod "Wired connection 1" ipv4.addresses ${WG_SERVER_IP}/24
-nmcli con mod "Wired connection 1" ipv4.gateway ${GATEWAY_IP}
-nmcli con mod "Wired connection 1" ipv4.dns "${PIHOLE_IP} ${PIHOLE_BACKUP_IP}"
+nmcli con mod "Wired connection 1" ipv4.addresses 10.0.0.1/24
+nmcli con mod "Wired connection 1" ipv4.gateway 192.168.0.1
+nmcli con mod "Wired connection 1" ipv4.dns "192.168.0.53 192.168.0.153"
 nmcli con mod "Wired connection 1" ipv4.method manual
 nmcli con up "Wired connection 1"
 ```
@@ -107,13 +107,13 @@ Access your router's admin interface and configure port forwarding:
 - **External Port**: 51820
 - **Internal Port**: 51820
 - **Protocol**: UDP
-- **Internal IP**: `${WG_SERVER_IP}`
+- **Internal IP**: `10.0.0.1`
 
 **Rule 2: Mobile Tunnel**
 - **External Port**: 51821
 - **Internal Port**: 51821
 - **Protocol**: UDP
-- **Internal IP**: `${WG_SERVER_IP}`
+- **Internal IP**: `10.0.0.1`
 
 ---
 
@@ -219,16 +219,16 @@ ListenPort = 51821
 PrivateKey = <paste server_private.key contents>
 
 # Forward only specific services
-PostUp = iptables -A FORWARD -i mobile -d ${PIHOLE_IP} -j ACCEPT
-PostUp = iptables -A FORWARD -i mobile -d ${JELLYFIN_IP} -j ACCEPT
-PostUp = iptables -A FORWARD -o mobile -s ${PIHOLE_IP} -j ACCEPT
-PostUp = iptables -A FORWARD -o mobile -s ${JELLYFIN_IP} -j ACCEPT
+PostUp = iptables -A FORWARD -i mobile -d 192.168.0.53 -j ACCEPT
+PostUp = iptables -A FORWARD -i mobile -d 192.168.0.120 -j ACCEPT
+PostUp = iptables -A FORWARD -o mobile -s 192.168.0.53 -j ACCEPT
+PostUp = iptables -A FORWARD -o mobile -s 192.168.0.120 -j ACCEPT
 PostUp = iptables -t nat -A POSTROUTING -o enp6s18 -j MASQUERADE
 
-PostDown = iptables -D FORWARD -i mobile -d ${PIHOLE_IP} -j ACCEPT
-PostDown = iptables -D FORWARD -i mobile -d ${JELLYFIN_IP} -j ACCEPT
-PostDown = iptables -D FORWARD -o mobile -s ${PIHOLE_IP} -j ACCEPT
-PostDown = iptables -D FORWARD -o mobile -s ${JELLYFIN_IP} -j ACCEPT
+PostDown = iptables -D FORWARD -i mobile -d 192.168.0.53 -j ACCEPT
+PostDown = iptables -D FORWARD -i mobile -d 192.168.0.120 -j ACCEPT
+PostDown = iptables -D FORWARD -o mobile -s 192.168.0.53 -j ACCEPT
+PostDown = iptables -D FORWARD -o mobile -s 192.168.0.120 -j ACCEPT
 PostDown = iptables -t nat -D POSTROUTING -o enp6s18 -j MASQUERADE
 
 # Mobile client
@@ -255,11 +255,11 @@ nano ~/client1.conf
 [Interface]
 PrivateKey = <paste client1_private.key contents>
 Address = 10.0.0.2/32
-DNS = ${PIHOLE_IP}  # Use Pi-hole for DNS
+DNS = 192.168.0.53  # Use Pi-hole for DNS
 
 [Peer]
 PublicKey = <paste server_public.key contents>
-Endpoint = ${PUBLIC_IP}:51820
+Endpoint = vpn.example.com:51820
 AllowedIPs = 10.0.0.0/24, 192.168.0.0/24  # Tunnel network + home network
 PersistentKeepalive = 25
 ```
@@ -283,12 +283,12 @@ nano ~/mobile_client.conf
 [Interface]
 PrivateKey = <paste mobile_client_private.key contents>
 Address = 10.10.10.2/32
-DNS = ${PIHOLE_BACKUP_IP}  # Backup Pi-hole instance
+DNS = 192.168.0.153  # Backup Pi-hole instance
 
 [Peer]
 PublicKey = <paste server_public.key contents>
-Endpoint = ${PUBLIC_IP}:51821
-AllowedIPs = ${JELLYFIN_IP}/32, 10.10.10.0/24  # Only Jellyfin and tunnel network
+Endpoint = vpn.example.com:51821
+AllowedIPs = 192.168.0.120/32, 10.10.10.0/24  # Only Jellyfin and tunnel network
 PersistentKeepalive = 25
 ```
 
@@ -407,7 +407,7 @@ sudo iptables -t nat -L -v -n
 1. Verify Pi-hole is accessible from WireGuard subnet
 2. Test DNS resolution:
 ```bash
-dig @${PIHOLE_IP} google.com
+dig @192.168.0.53 google.com
 ```
 
 3. Ensure DNS is specified in client config's `[Interface]` section

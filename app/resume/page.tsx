@@ -147,6 +147,20 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+function SectionHeading({ title }: { title: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-6">
+      <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#4682B4]/15 dark:bg-[#5F9EA0]/20 border border-[#4682B4]/25 dark:border-[#5F9EA0]/30">
+        <svg className="h-4 w-4 text-[#4682B4] dark:text-[#5F9EA0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18M3 12h18" />
+        </svg>
+      </span>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white border-l-4 border-[#4682B4] pl-3">{title}</h2>
+      <span className="h-[2px] flex-1 rounded-full bg-gradient-to-r from-[#4682B4]/70 to-transparent" />
+    </div>
+  );
+}
+
 export default function ResumePage() {
   return (
     <>
@@ -179,26 +193,23 @@ export default function ResumePage() {
 
             {/* Summary */}
             <motion.section variants={itemVariants} className="mb-10">
-              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                Summary
-              </h2>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              <SectionHeading title="Summary" />
+              <p className="text-gray-700 dark:text-gray-300 leading-relaxed bg-white/80 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm">
                 {resumeData.summary}
               </p>
             </motion.section>
 
             {/* Experience */}
             <motion.section variants={itemVariants} className="mb-10">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                Experience
-              </h2>
-              <div className="space-y-8">
+              <SectionHeading title="Experience" />
+              <div className="relative space-y-8 pl-6 before:absolute before:left-2 before:top-0 before:bottom-0 before:w-px before:bg-[#4682B4]/30 dark:before:bg-[#5F9EA0]/30">
                 {resumeData.experience.map((job, index) => (
                   <motion.div
                     key={index}
                     variants={itemVariants}
-                    className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
+                    className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 border-l-2 border-gray-200 dark:border-gray-700 pl-4 ml-2"
                   >
+                    <span className="absolute -left-[25px] top-7 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-gray-900 bg-[#4682B4] dark:bg-[#5F9EA0]" />
                     <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-3">
                       <div>
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -229,16 +240,15 @@ export default function ResumePage() {
 
             {/* Homelab Projects */}
             <motion.section variants={itemVariants} className="mb-10">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                Personal Projects
-              </h2>
-              <div className="space-y-8">
+              <SectionHeading title="Personal Projects" />
+              <div className="relative space-y-8 pl-6 before:absolute before:left-2 before:top-0 before:bottom-0 before:w-px before:bg-[#4682B4]/30 dark:before:bg-[#5F9EA0]/30">
                 {resumeData.homelabProjects.map((project, index) => (
                   <motion.div
                     key={index}
                     variants={itemVariants}
-                    className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
+                    className="relative bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700"
                   >
+                    <span className="absolute -left-[25px] top-7 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-gray-900 bg-[#4682B4] dark:bg-[#5F9EA0]" />
                     <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-3">
                       <div className="flex-1">
                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -264,9 +274,7 @@ export default function ResumePage() {
 
             {/* Education */}
             <motion.section variants={itemVariants} className="mb-10">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                Education
-              </h2>
+              <SectionHeading title="Education" />
               {resumeData.education.map((edu, index) => (
                 <motion.div
                   key={index}
@@ -304,9 +312,7 @@ export default function ResumePage() {
 
             {/* Skills */}
             <motion.section variants={itemVariants} className="mb-10">
-              <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-                Skills
-              </h2>
+              <SectionHeading title="Skills" />
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Hard Skills */}
                 <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
@@ -317,7 +323,7 @@ export default function ResumePage() {
                     {resumeData.hardSkills.map((skill) => (
                       <span
                         key={skill}
-                        className="px-3 py-1 bg-[#B0C4DE] dark:bg-[#36648B] text-[#1e3a5f] dark:text-[#E0F0FF] rounded-full text-sm"
+                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#4682B4]/10 text-[#4682B4] dark:bg-[#4682B4]/20 dark:text-[#5F9EA0] border border-[#4682B4]/20"
                       >
                         {skill}
                       </span>
@@ -334,7 +340,7 @@ export default function ResumePage() {
                     {resumeData.softSkills.map((skill) => (
                       <span
                         key={skill}
-                        className="px-3 py-1 bg-[#B0C4DE] dark:bg-[#36648B] text-[#1e3a5f] dark:text-[#E0F0FF] rounded-full text-sm"
+                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#4682B4]/10 text-[#4682B4] dark:bg-[#4682B4]/20 dark:text-[#5F9EA0] border border-[#4682B4]/20"
                       >
                         {skill}
                       </span>
@@ -350,8 +356,11 @@ export default function ResumePage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => window.print()}
-                className="bg-[#4682B4] hover:bg-[#36648B] dark:bg-[#5F9EA0] dark:hover:bg-[#4682B4] text-white font-semibold py-3 px-8 rounded-lg transition-colors shadow-md"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#4682B4] text-white rounded-lg hover:bg-[#3a6fa0] shadow-md hover:shadow-lg transition-all duration-200 font-medium"
               >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 9V4h12v5M6 18h12M7 14h10v6H7z" />
+                </svg>
                 Download PDF Resume
               </motion.button>
             </motion.div>

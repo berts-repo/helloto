@@ -1,13 +1,43 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PostCard } from "./PostCard";
-import type { Post } from "@/lib/posts";
+import type { PostSummary } from "@/lib/posts";
 
-export function WebpostClient({ posts, tags }: { posts: Post[]; tags: string[] }) {
+export function WebpostClient({ posts, tags }: { posts: PostSummary[]; tags: string[] }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+
+  useEffect(() => {
+    const query = searchParams.get("q") ?? "";
+    const tag = searchParams.get("tag");
+    setSearchQuery(query);
+    setSelectedTag(tag && tags.includes(tag) ? tag : null);
+  }, [searchParams, tags]);
+
+  const updateUrl = (query: string, tag: string | null) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (query) {
+      params.set("q", query);
+    } else {
+      params.delete("q");
+    }
+
+    if (tag) {
+      params.set("tag", tag);
+    } else {
+      params.delete("tag");
+    }
+
+    const queryString = params.toString();
+    router.replace(queryString ? `${pathname}?${queryString}` : pathname);
+  };
 
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
@@ -34,11 +64,19 @@ export function WebpostClient({ posts, tags }: { posts: Post[]; tags: string[] }
 
       {/* Search Bar */}
       <div className="mb-8">
+        <label htmlFor="post-search" className="sr-only">
+          Search posts
+        </label>
         <input
+          id="post-search"
           type="text"
           placeholder="Search posts..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => {
+            const nextQuery = e.target.value;
+            setSearchQuery(nextQuery);
+            updateUrl(nextQuery, selectedTag);
+          }}
           className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#4682B4] focus:border-transparent transition-colors"
         />
       </div>
@@ -51,7 +89,10 @@ export function WebpostClient({ posts, tags }: { posts: Post[]; tags: string[] }
           </h2>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setSelectedTag(null)}
+              onClick={() => {
+                setSelectedTag(null);
+                updateUrl(searchQuery, null);
+              }}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 selectedTag === null
                   ? "bg-[#4682B4] text-white"
@@ -63,7 +104,11 @@ export function WebpostClient({ posts, tags }: { posts: Post[]; tags: string[] }
             {tags.map((tag) => (
               <button
                 key={tag}
-                onClick={() => setSelectedTag(tag)}
+                onClick={() => {
+                  const nextTag = selectedTag === tag ? null : tag;
+                  setSelectedTag(nextTag);
+                  updateUrl(searchQuery, nextTag);
+                }}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedTag === tag
                     ? "bg-[#4682B4] text-white"
