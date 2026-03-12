@@ -75,8 +75,8 @@ export default function Home() {
             <h1 className="text-6xl md:text-7xl font-extrabold mb-4 leading-tight bg-gradient-to-r from-[#4682B4] to-[#5F9EA0] bg-clip-text text-transparent">
               Bert Darnell
             </h1>
-            <p className="text-xl text-gray-700 dark:text-gray-300">
-            Cybersecurity Professional | Help Desk Specialist
+            <p className="text-xl text-gray-900 dark:text-gray-300 font-medium">
+              Cybersecurity Professional | Help Desk Specialist
             </p>
             <div className="mt-8 flex items-center justify-center gap-3 flex-wrap">
               <a
@@ -163,12 +163,9 @@ export default function Home() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="max-w-2xl mx-auto"
         >
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <span className="h-[2px] w-10 rounded-full bg-[#4682B4]" />
-            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
-              Get In Touch
-            </h2>
-          </div>
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">
+            Get In Touch
+          </h2>
           <form
             onSubmit={handleSubmit}
             className="bg-gray-50/90 dark:bg-gray-800/80 p-8 rounded-2xl shadow-lg border border-slate-200/80 dark:border-slate-700/70 backdrop-blur-sm"
