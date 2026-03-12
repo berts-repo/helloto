@@ -3,52 +3,8 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { useState } from "react";
 
-// Portfolio landing page with contact form
 export default function Home() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [formStatus, setFormStatus] = useState<"idle" | "success" | "error">("idle");
-  const [formMessage, setFormMessage] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus("idle");
-    setFormMessage("");
-
-    const form = e.target as HTMLFormElement;
-    const formDataObj = new FormData(form);
-
-    try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formDataObj,
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setSubmitted(true);
-        setFormStatus("success");
-        setFormMessage("Message sent successfully.");
-        setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setSubmitted(false), 3000);
-      } else {
-        setFormStatus("error");
-        setFormMessage("Failed to send message. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setFormStatus("error");
-      setFormMessage("Failed to send message. Please try again.");
-    }
-  };
-
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       {/* Header with Theme Toggle */}
@@ -103,6 +59,16 @@ export default function Home() {
                 </svg>
                 LinkedIn
               </a>
+              <a
+                href="mailto:bert@helloto.me"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#4682B4]/40 hover:border-[#4682B4] hover:shadow-[0_0_12px_#4682B430] transition-all duration-200 bg-white/80 dark:bg-slate-800/70 text-sm font-medium text-[#36648B] dark:text-[#bde8e9] shadow-sm hover:-translate-y-0.5"
+                aria-label="Email"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                Email
+              </a>
             </div>
           </div>
           </motion.div>
@@ -156,106 +122,6 @@ export default function Home() {
           </Link>
         </motion.div>
 
-        {/* Contact Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="max-w-2xl mx-auto"
-        >
-          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">
-            Get In Touch
-          </h2>
-          <form
-            onSubmit={handleSubmit}
-            className="bg-gray-50/90 dark:bg-gray-800/80 p-8 rounded-2xl shadow-lg border border-slate-200/80 dark:border-slate-700/70 backdrop-blur-sm"
-          >
-            {/* Hidden fields for Web3Forms */}
-            <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_KEY} />
-            <input type="hidden" name="subject" value="New Contact Form Submission from helloto.me" />
-
-            <div className="mb-6">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/90 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#4682B4]/50 focus:border-[#4682B4] focus:shadow-[0_0_0_4px_rgba(70,130,180,0.20)] dark:focus:shadow-[0_0_0_4px_rgba(95,158,160,0.22)] transition-all outline-none"
-                required
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/90 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#4682B4]/50 focus:border-[#4682B4] focus:shadow-[0_0_0_4px_rgba(70,130,180,0.20)] dark:focus:shadow-[0_0_0_4px_rgba(95,158,160,0.22)] transition-all outline-none"
-                required
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="message"
-                className="block text-sm font-medium mb-2 text-gray-900 dark:text-white"
-              >
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={5}
-                value={formData.message}
-                onChange={(e) =>
-                  setFormData({ ...formData, message: e.target.value })
-                }
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/90 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#4682B4]/50 focus:border-[#4682B4] focus:shadow-[0_0_0_4px_rgba(70,130,180,0.20)] dark:focus:shadow-[0_0_0_4px_rgba(95,158,160,0.22)] transition-all resize-none outline-none"
-                required
-              />
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              className="w-full bg-[#4682B4] hover:bg-[#36648B] dark:bg-[#5F9EA0] dark:hover:bg-[#4682B4] text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-md"
-            >
-              {submitted ? "Sent! ✓" : "Send Message"}
-            </motion.button>
-            {formStatus !== "idle" && (
-              <div
-                aria-live="polite"
-                className={`mt-4 text-sm font-medium ${
-                  formStatus === "success"
-                    ? "text-green-600 dark:text-green-400"
-                    : "text-red-600 dark:text-red-400"
-                }`}
-              >
-                {formMessage}
-              </div>
-            )}
-          </form>
-        </motion.div>
       </main>
     </div>
   );
