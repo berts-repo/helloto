@@ -65,8 +65,8 @@ body {
   background-image:
     radial-gradient(circle at top right, color-mix(in srgb, var(--accent) 20%, transparent), transparent 40%),
     radial-gradient(circle at bottom left, color-mix(in srgb, #7dd3fc 12%, transparent), transparent 45%),
-    linear-gradient(to right, color-mix(in srgb, var(--border) 28%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--border) 28%, transparent) 1px, transparent 1px);
+    linear-gradient(to right, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px);
   background-size: auto, auto, 28px 28px, 28px 28px;
   background-position: center;
 }
