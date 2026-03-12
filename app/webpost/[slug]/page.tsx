@@ -2,36 +2,9 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { Navbar } from "@/components/Navbar";
+import { ReadingProgress } from "@/components/ReadingProgress";
 import Link from "next/link";
-import React from "react";
-
-function ReadingProgress() {
-  "use client";
-
-  const [progress, setProgress] = React.useState(0);
-
-  React.useEffect(() => {
-    const updateProgress = () => {
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      const nextProgress = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
-      setProgress(nextProgress);
-    };
-
-    updateProgress();
-    window.addEventListener("scroll", updateProgress);
-    window.addEventListener("resize", updateProgress);
-    return () => {
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, []);
-
-  return (
-    <div className="fixed top-0 left-0 right-0 h-1 z-50">
-      <div style={{ width: `${progress}%` }} className="h-full bg-[#4682B4] transition-all duration-100" />
-    </div>
-  );
-}
+import type React from "react";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
