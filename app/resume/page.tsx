@@ -185,14 +185,12 @@ export default function ResumePage() {
                 <motion.section variants={itemVariants} className="mb-10">
                   <SectionHeading title="Experience" />
                   <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm">
-                    <div className="relative space-y-8 pl-6 before:absolute before:left-2 before:top-0 before:bottom-0 before:w-px before:bg-[#4682B4]/30 dark:before:bg-[#5F9EA0]/30">
+                    <div className="space-y-8">
                       {resumeData.experience.map((job, index) => (
                         <motion.div
                           key={index}
                           variants={itemVariants}
-                          className="relative pl-4 ml-2"
                         >
-                          <span className="absolute -left-[25px] top-2.5 h-3.5 w-3.5 rounded-full border-2 border-gray-100 dark:border-gray-800 bg-[#4682B4] dark:bg-[#5F9EA0]" />
                           <div className="flex items-start justify-between gap-4">
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                               {job.company}
@@ -209,11 +207,11 @@ export default function ResumePage() {
                               {job.location}
                             </p>
                           )}
-                          <div className="mt-4 space-y-2 text-gray-700 dark:text-gray-300">
+                          <ul className="mt-4 ml-5 list-disc space-y-2 text-gray-700 dark:text-gray-300">
                             {job.description.map((item, i) => (
-                              <p key={i}>{item}</p>
+                              <li key={i}>{item}</li>
                             ))}
-                          </div>
+                          </ul>
                         </motion.div>
                       ))}
                     </div>
