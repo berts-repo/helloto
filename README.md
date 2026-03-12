@@ -63,7 +63,7 @@ Your markdown content here...
 /
 ├─ app/
 │  ├─ layout.tsx          # Root layout with theme provider
-│  ├─ page.tsx            # Landing page with contact form
+│  ├─ page.tsx            # Landing page
 │  ├─ globals.css         # Global styles and Tailwind
 │  ├─ webpost/
 │  │  ├─ page.tsx         # Webpost listing with search & filters
