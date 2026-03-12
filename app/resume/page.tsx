@@ -165,8 +165,10 @@ export default function ResumePage() {
               <h1 className="text-4xl md:text-5xl font-bold mb-2 text-gray-900 dark:text-white">
                 {resumeData.name}
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-4">
-                {resumeData.title}
+              <p className="text-xl text-gray-600 dark:text-gray-400 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-0">
+                <span>Cybersecurity Professional</span>
+                <span className="hidden sm:inline mx-2">|</span>
+                <span>Help Desk Specialist</span>
               </p>
             </motion.header>
             <div className="resume-layout grid grid-cols-1 md:grid-cols-[1fr_auto] md:gap-8">
@@ -207,11 +209,11 @@ export default function ResumePage() {
                               {job.location}
                             </p>
                           )}
-                          <ul className="mt-4 ml-5 list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                          <div className="mt-4 space-y-2 text-gray-700 dark:text-gray-300">
                             {job.description.map((item, i) => (
-                              <li key={i}>{item}</li>
+                              <p key={i}>{item}</p>
                             ))}
-                          </ul>
+                          </div>
                         </motion.div>
                       ))}
                     </div>
