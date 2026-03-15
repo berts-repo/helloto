@@ -1,0 +1,90 @@
+---
+title: "Reliquary: A Personal Archiving Utility Built Around tar"
+date: "2026-03-14"
+excerpt: "I got tired of Googling the same tar flags every time I needed to archive something. So I wrote reliq, a small Bash utility that archives files and directories into dated tarballs and keeps a log of everything it touches."
+tags: ["Bash", "CLI", "Tools", "Archiving"]
+---
+
+# Reliquary: A Personal Archiving Utility Built Around tar
+
+## Introduction
+
+I archive things maybe once a month, which is just often enough to forget the flags every single time. Every time I needed to archive something, I was back to Googling the same `tar` flags I'd looked up a dozen times before. I also wanted an easier way to streamline unused folders from working directories that I may or may not need again. So I wrote `reliq`, a small Bash utility that archives files and directories into a dated tarball and keeps a log of everything it touches.
+
+The source is on GitHub: [berts-repo/reliquary](https://github.com/berts-repo/reliquary)
+
+## The Problem
+
+The standard `tar` workflow is fine if you do it every day. But when you only reach for it occasionally, you're back to Googling the flags, manually naming the file, and hoping you remember what you put in it six months later.
+
+## Built with some safety in mind
+
+`reliq` is a small tool, but it tries not to do dumb things. Archives are checked for sketchy paths before anything is extracted. Originals are only deleted when you pass `--move`, and even then only after the archive passes a readability check — if verification fails, the archive is removed and your originals are left alone. File locking prevents concurrent runs from corrupting the log. And if you ever need to skip the path checks on restore, `--unsafe-restore` is there as an opt-out.
+
+## How It Works
+
+The default mode is archiving. Point `reliq` at a file or directory and it creates a dated tarball in `~/Reliquaries`:
+
+```sh
+reliq ~/projects/myapp
+```
+
+If you want to clean up the original after archiving, pass `-m`. The original is only deleted after the archive passes a readability check:
+
+```sh
+reliq -m ~/projects/myapp
+```
+
+You can override the label that gets appended to the archive filename:
+
+```sh
+reliq --label mybackup ~/projects/myapp
+```
+
+To restore an archive back to where it came from, pass `-R` with the archive name. `reliq` looks up the original paths from the log and puts everything back:
+
+```sh
+reliq -R 2026-03-12-143022_myapp.tar.gz
+```
+
+If you just want to extract into a specific directory instead:
+
+```sh
+reliq --restore 2026-03-12-143022_myapp.tar.gz -d ~/restored
+```
+
+To check that an archive is still readable without extracting it:
+
+```sh
+reliq --verify 2026-03-12-143022_myapp.tar.gz
+```
+
+To see everything in the log as a table:
+
+```sh
+reliq --list
+```
+
+And to delete an archive and remove its log entry in one shot:
+
+```sh
+reliq --yeet 2026-03-12-143022_myapp.tar.gz
+```
+
+## Building It Out
+
+It started as a wrapper around `tar` and grew into something I'd actually rely on.
+
+The first version was a script called `archive` — it created dated tarballs, logged what it touched, and had a `-r` flag to delete the originals after archiving. Simple enough. The first real change was renaming `-r` to `-m/--move`, which sounds minor but matters — `--remove` implied deleting the archive, not the source. `--move` better describes what's actually happening: you're moving files out of your working directory into storage.
+
+From there, `--yeet` came next — a single command to delete an archive and remove its log entry. Then the archive directory got renamed from `Reliq/` to `Reliquaries/` to match the project name properly.
+
+The big commit added `-R/--restore`, `--verify`, `--list`, and file locking all at once. Restore was the feature that made the log actually earn its keep — because the log records original source paths, `reliq -R` can put files back exactly where they came from. `--verify` gives you a quick readability check without extracting anything. `--list` renders the log as a readable table. And file locking meant concurrent runs wouldn't step on each other.
+
+The last pass was about making it trustworthy for real use: hardened restore path validation, stale lock recovery, backward compatibility with the older log format, a full test suite, and a rewritten README.
+
+## Known Limitations
+
+`reliq` does what it needs to, but it's a personal tool and the edges show.
+
+There's only one log file per vault, and only one vault at a time — there's no support for managing multiple separate archive locations from a single log. Archives are always `.tar.gz`; there's no option for other formats or compression levels. Storage is local only — no remote destinations, no cloud. The log format has two versions due to a field order change mid-project, so the parser has to detect which format it's reading; it works, but it's the kind of thing that accrues over time. There's no encryption, so archives are as exposed as any other file on disk. And there's no retention or pruning policy — `--yeet` is manual, so old archives accumulate until you clean them up yourself.
